@@ -1,0 +1,38 @@
+name: StepSecurity Secure Registry Demo
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  npm-demo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js and StepSecurity registry
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: "https://registry.stepsecurity.io/javascript/"
+          package-manager-cache: false
+
+      - name: Install packages through StepSecurity
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.STEPSECURITY_NPM_TOKEN }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::error::Add the STEPSECURITY_NPM_TOKEN Actions secret."
+            exit 1
+          fi
+
+          npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Test lodash
+        run: |
+          node -e "console.log(require('lodash').capitalize('hello stepsecurity'))"
