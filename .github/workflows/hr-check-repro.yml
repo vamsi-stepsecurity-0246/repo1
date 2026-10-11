@@ -22,7 +22,7 @@ jobs:
 
       - name: Call endpoints from repro-endpoints.txt
         run: |
-          while read -r host; do
+          while read -r host || [ -n "$host" ]; do
             [ -z "$host" ] && continue
             case "$host" in \#*) continue;; esac
             echo "calling https://$host"
