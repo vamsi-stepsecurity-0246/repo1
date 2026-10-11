@@ -1,4 +1,4 @@
 api.github.com
 registry.npmjs.org
 example.org1
-wikipedia.com
+example.net
