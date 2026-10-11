@@ -1,0 +1,43 @@
+name: HR Check Repro
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  job-a:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@v4
+
+      - name: Call endpoints from repro-endpoints.txt
+        run: |
+          while read -r host; do
+            [ -z "$host" ] && continue
+            case "$host" in \#*) continue;; esac
+            echo "calling https://$host"
+            curl -s -o /dev/null -m 10 "https://$host" || true
+          done < repro-endpoints.txt
+
+  job-b:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@v4
+
+      - name: Call a job-b specific endpoint
+        run: curl -s -o /dev/null -m 10 https://httpbin.org/get || true
