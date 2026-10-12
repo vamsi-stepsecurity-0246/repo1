@@ -1,3 +1,4 @@
 api.github.com
 registry.npmjs.org
 example5.org
+example6.org
