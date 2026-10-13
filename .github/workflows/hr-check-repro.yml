@@ -18,7 +18,7 @@ jobs:
         with:
           egress-policy: audit
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Call endpoints from repro-endpoints.txt
         run: |
@@ -37,7 +37,7 @@ jobs:
         with:
           egress-policy: audit
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Call a job-b specific endpoint
         run: curl -s -o /dev/null -m 10 https://httpbin.org/get || true
