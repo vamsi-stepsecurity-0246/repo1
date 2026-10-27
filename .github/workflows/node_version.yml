@@ -1,0 +1,12 @@
+name: node-cache-check
+on: workflow_dispatch
+jobs:
+  check:
+    runs-on: ubuntu-stepsecurity-x64   # use the exact label the customer uses
+    steps:
+      - run: |
+          echo "RUNNER_TOOL_CACHE=$RUNNER_TOOL_CACHE"
+          ls -1 "$RUNNER_TOOL_CACHE/node" 2>/dev/null || echo "no node in tool cache"
+          which node && node --version || echo "no system node"
+          echo "ImageVersion=$ImageVersion"
+          cat /etc/os-release | head -3
