@@ -1,0 +1,17 @@
+name: repro-bad
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/repro-bad.yml
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: vamsi-stepsecurity-0246/repo2/bootstrap@v1
+      - run: echo hello
